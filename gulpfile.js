@@ -6,13 +6,14 @@ var header  = require('gulp-header');
 var uglify  = require('gulp-uglify');
 var plumber = require('gulp-plumber');
 var clean   = require('gulp-clean');
+var concat   = require('gulp-concat');
 var rename  = require('gulp-rename');
 var package = require('./package.json');
 
 var paths = {
   output : 'dist/',
   scripts : [
-    'src/conditionizr.js'
+    'src/conditionizr.js', 'detects/*.js'
   ],
   test: [
     'test/spec/**/*.js'
@@ -31,6 +32,7 @@ var banner = [
 
 gulp.task('scripts', ['clean'], function() {
   return gulp.src(paths.scripts)
+    .pipe(concat(package.name + ".js"))
     .pipe(plumber())
     .pipe(header(banner, { package : package }))
     .pipe(gulp.dest('dist/'))
